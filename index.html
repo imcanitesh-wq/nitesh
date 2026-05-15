@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HotelSathi — Hospitality Growth Partner for Hotels in Nepal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#0a0a0a;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none;}
+:root{
+  --white:#ffffff;--bg-light:#f9fafb;--bg-muted:#f3f4f6;--bg-dark:#0a0a0a;--bg-dark2:#111111;
+  --accent:#4f46e5;--accent-h:#4338ca;--accent-soft:#eef2ff;--accent-mid:#a5b4fc;
+  --ink:#0a0a0a;--ink2:#6b7280;--ink3:#9ca3af;--ink4:#d1d5db;
+  --border:#e5e7eb;--border-light:#f3f4f6;
+  --r8:8px;--r12:12px;--r16:16px;--r24:24px;--rpill:100px;
+  --sh-xs:0 1px 3px rgba(0,0,0,.05);
+  --sh-sm:0 2px 8px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.04);
+  --sh-md:0 8px 24px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04);
+  --sh-lg:0 20px 60px rgba(0,0,0,.10),0 4px 16px rgba(0,0,0,.05);
+  --sh-accent:0 8px 28px rgba(79,70,229,.22);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+/* CURSOR */
+#cur,#cring{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);border-radius:50%;will-change:transform;}
+#cur{width:8px;height:8px;background:var(--accent);transition:width .2s var(--ease-spring),height .2s var(--ease-spring),opacity .2s;}
+#cring{width:32px;height:32px;z-index:9998;border:1.5px solid rgba(79,70,229,.3);transition:width .35s var(--ease-out),height .35s var(--ease-out),border-color .25s,opacity .25s;}
+body.cur-hover #cur{width:0;height:0;opacity:0}
+body.cur-hover #cring{width:48px;height:48px;border-color:var(--accent);border-width:2px}
+@media(hover:none){#cur,#cring{display:none}body{cursor:auto}}
+
+/* NAV */
+nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:500;display:flex;align-items:center;background:rgba(255,255,255,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:var(--rpill);padding:8px 8px 8px 22px;box-shadow:var(--sh-sm);white-space:nowrap;transition:box-shadow .4s var(--ease-out),background .4s;animation:navDrop .6s var(--ease-out) both;}
+@keyframes navDrop{from{opacity:0;transform:translateX(-50%) translateY(-14px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+nav.scrolled{background:rgba(255,255,255,.97);box-shadow:var(--sh-md)}
+.logo{font-size:.9375rem;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.02em;display:flex;align-items:center;gap:7px;margin-right:22px;flex-shrink:0;}
+.logo-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(79,70,229,.4);animation:sonar 2.4s ease-out infinite;}
+@keyframes sonar{0%{box-shadow:0 0 0 0 rgba(79,70,229,.4)}70%{box-shadow:0 0 0 8px rgba(79,70,229,0)}100%{box-shadow:0 0 0 0 rgba(79,70,229,0)}}
+.nav-links{display:flex;align-items:center;list-style:none;gap:1px;margin-right:10px}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--ink2);text-decoration:none;padding:7px 14px;border-radius:var(--rpill);transition:color .18s,background .18s;}
+.nav-links a:hover{color:var(--ink);background:var(--bg-light)}
+.nav-cta{background:var(--accent-soft);color:var(--accent);border:1.5px solid rgba(79,70,229,.25);padding:9px 20px;border-radius:var(--rpill);font-size:.875rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;flex-shrink:0;transition:background .2s,transform .2s var(--ease-spring),box-shadow .2s;}
+.nav-cta:hover{background:var(--accent);color:#fff;transform:translateY(-1px) scale(1.02);box-shadow:var(--sh-accent)}
+
+/* DROPDOWN */
+.nav-has-drop{position:relative}
+.drop-trigger{display:flex;align-items:center;gap:5px;font-size:.875rem;font-weight:500;color:var(--ink2);text-decoration:none;padding:7px 14px;border-radius:var(--rpill);cursor:pointer;border:none;background:none;font-family:inherit;transition:color .18s,background .18s;user-select:none;}
+.drop-trigger:hover,.nav-has-drop.drop-open .drop-trigger{color:var(--ink);background:var(--bg-light)}
+.nav-has-drop.drop-open .drop-trigger{color:var(--accent);background:var(--accent-soft)}
+.drop-chevron{width:14px;height:14px;display:flex;align-items:center;justify-content:center;transition:transform .3s var(--ease-out);flex-shrink:0;}
+.drop-chevron svg{display:block}
+.nav-has-drop.drop-open .drop-chevron{transform:rotate(180deg)}
+.drop-menu{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-8px);width:580px;background:#fff;border:1px solid var(--border);border-radius:var(--r24);padding:8px;box-shadow:0 20px 60px rgba(0,0,0,.10),0 4px 16px rgba(0,0,0,.06);opacity:0;pointer-events:none;transition:opacity .25s var(--ease-out),transform .3s var(--ease-out);z-index:600;}
+.drop-menu.open{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
+.drop-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.drop-item{display:flex;flex-direction:column;padding:14px 16px;border-radius:var(--r16);text-decoration:none;transition:background .18s var(--ease-out);}
+.drop-item:hover{background:var(--bg-light)}
+.drop-item:hover .di-title{color:var(--accent)}
+.di-title{font-size:.9375rem;font-weight:600;color:var(--ink);letter-spacing:-.015em;margin-bottom:3px;transition:color .18s;}
+.di-sub{font-size:.8125rem;font-weight:400;color:var(--ink3);line-height:1.4;}
+.drop-row-divider{grid-column:span 2;height:1px;background:var(--border-light);margin:2px 0;}
+.drop-footer{border-top:1px solid var(--border-light);margin-top:4px;padding:10px 8px 4px;display:flex;align-items:center;justify-content:space-between;}
+.drop-footer-txt{font-size:.8rem;color:var(--ink3);font-weight:400}
+.drop-footer-link{font-size:.8rem;font-weight:600;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;transition:gap .18s;}
+.drop-footer-link:hover{gap:7px}
+
+/* HERO — tighter top padding so badge is ~10mm from nav */
+.hero{background:var(--white);min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:100px 72px 80px;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:-120px;right:-180px;width:800px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(79,70,229,.06) 0%,transparent 65%);pointer-events:none;animation:glowFloat 8s ease-in-out infinite;}
+.hero-glow2{position:absolute;bottom:-100px;left:-80px;width:500px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(79,70,229,.04) 0%,transparent 70%);pointer-events:none;animation:glowFloat 11s 3s ease-in-out infinite;}
+@keyframes glowFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,20px)}}
+.hero-left{position:relative;z-index:2;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);border:1px solid rgba(79,70,229,.2);padding:6px 14px 6px 10px;border-radius:var(--rpill);font-size:.8125rem;font-weight:600;color:var(--accent);margin-bottom:24px;opacity:0;animation:slideUp .55s .15s var(--ease-out) forwards;}
+.badge-pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:sonar 2.2s infinite;}
+.hero h1{font-size:clamp(2.8rem,5vw,5.5rem);font-weight:700;line-height:.97;letter-spacing:-.045em;color:var(--ink);margin-bottom:20px;opacity:0;animation:slideUp .7s .28s var(--ease-out) forwards;}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent) 0%,#818cf8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:1.0625rem;line-height:1.75;color:var(--ink2);max-width:480px;margin-bottom:40px;opacity:0;animation:slideUp .65s .42s var(--ease-out) forwards;}
+.hero-stats{display:inline-flex;border:1px solid var(--border);border-radius:var(--r24);overflow:hidden;background:var(--white);box-shadow:var(--sh-xs);opacity:0;animation:slideUp .6s .54s var(--ease-out) forwards;}
+.hstat{padding:18px 30px;text-align:left;border-right:1px solid var(--border);}
+.hstat:last-child{border-right:none}
+.hstat strong{display:block;font-size:1.6rem;font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:4px;color:var(--ink);}
+.hstat span{font-size:.7rem;font-weight:500;color:var(--ink3);letter-spacing:.04em;text-transform:uppercase}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO RIGHT — tabbed interactive chart */
+.hero-right{position:relative;z-index:2;opacity:0;animation:slideUp .8s .5s var(--ease-out) forwards;}
+.hero-chart-card{background:#fff;border:1px solid var(--border);border-radius:var(--r24);padding:24px;box-shadow:var(--sh-lg);min-height:380px;}
+
+/* Tabs */
+.chart-tabs{display:flex;gap:4px;background:var(--bg-muted);border-radius:10px;padding:4px;margin-bottom:20px;}
+.chart-tab{flex:1;padding:8px 0;border:none;background:transparent;border-radius:8px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;color:var(--ink3);cursor:pointer;transition:all .22s var(--ease-out);}
+.chart-tab.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.chart-tab:hover:not(.active){color:var(--ink2);}
+
+/* Tab panels */
+.tab-panel{display:none;animation:tabIn .35s var(--ease-out);}
+.tab-panel.active{display:block;}
+@keyframes tabIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.tab-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.hcc-title{font-size:.72rem;font-weight:700;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
+.hcc-sub{font-size:1.2rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.acc{color:var(--accent);}
+.live-chip{display:flex;align-items:center;gap:5px;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--rpill);padding:5px 10px;font-size:.72rem;font-weight:600;color:#16a34a;white-space:nowrap;}
+.live-dot-sm{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.4);animation:sonar 1.8s infinite;flex-shrink:0;}
+
+/* Line chart */
+.line-chart-wrap{position:relative;margin-bottom:10px;}
+.line-svg{width:100%;height:100px;display:block;overflow:visible;}
+.chart-line{stroke-dasharray:700;stroke-dashoffset:700;animation:drawLine .9s .3s var(--ease-out) forwards;}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+.chart-area{opacity:0;animation:fadeIn .6s .9s forwards;}
+@keyframes fadeIn{to{opacity:1}}
+.pulse-ring{animation:pulseRing 2s ease-out infinite;}
+@keyframes pulseRing{0%{r:8;opacity:.3}100%{r:16;opacity:0}}
+.chart-x-labels{display:flex;justify-content:space-between;padding:0 2px;margin-top:4px;}
+.chart-x-labels span{font-size:.7rem;color:var(--ink3);font-weight:500;}
+
+/* Occupancy bars */
+.occ-bars{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.occ-row{display:flex;align-items:center;gap:10px;}
+.occ-lbl{font-size:.75rem;font-weight:600;color:var(--ink3);width:28px;flex-shrink:0;}
+.occ-track{flex:1;height:22px;background:var(--bg-muted);border-radius:6px;overflow:hidden;}
+.occ-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),#818cf8);width:0;transition:width .8s var(--ease-out);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.7rem;font-weight:700;color:#fff;}
+.occ-fill[data-current="true"]{background:linear-gradient(90deg,#16a34a,#4ade80);}
+.tab-panel.active .occ-fill{width:var(--w);}
+
+/* ADR donut */
+.adr-donut-wrap{display:flex;align-items:center;gap:20px;margin-bottom:14px;}
+.donut-svg{width:110px;height:110px;flex-shrink:0;}
+.donut-arc{stroke-dashoffset:301.6;animation:drawDonut .9s .3s var(--ease-out) forwards;}
+@keyframes drawDonut{to{stroke-dashoffset:90}}
+.adr-legend{display:flex;flex-direction:column;gap:10px;flex:1;}
+.adr-leg-item{display:flex;align-items:center;gap:8px;}
+.adr-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.adr-leg-lbl{font-size:.75rem;color:var(--ink3);font-weight:500;}
+.adr-leg-val{font-size:.88rem;font-weight:700;color:var(--ink);}
+
+/* KPI row shared */
+.tab-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+.tkpi{background:var(--bg-light);border-radius:var(--r12);padding:12px;border:1px solid var(--border);}
+.tkpi-l{font-size:.65rem;font-weight:700;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+.tkpi-v{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);}
+.tkpi-v.acc{color:var(--accent);}
+.tkpi-d{font-size:.68rem;font-weight:500;color:#16a34a;margin-top:2px;}
+
+/* TICKER */
+.ticker-wrap{background:var(--bg-light);border-top:2px solid rgba(139,92,246,.25);border-bottom:2px solid rgba(139,92,246,.25);padding:18px 0;overflow:hidden;position:relative;}
+.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;}
+.ticker-wrap::before{left:0;background:linear-gradient(90deg,var(--bg-light),transparent)}
+.ticker-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg-light),transparent)}
+.ticker-track{display:flex;align-items:center;width:max-content;animation:tickerScroll 42s linear infinite;}
+.tick{display:inline-flex;align-items:center;padding:0 36px;white-space:nowrap;flex-shrink:0;}
+.tick::after{content:'·';color:rgba(139,92,246,.4);font-size:1.4rem;margin-left:36px;}
+/* shared OTA base */
+.ota{display:inline-flex;align-items:center;gap:7px;font-size:1.05rem;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:-.01em;line-height:1;}
+/* Booking.com */
+.ota.booking{color:#003580;}.dc{color:#003580;}
+/* Expedia */
+.ota.expedia{color:#00355F;}
+.exp-box{width:22px;height:22px;background:#FFC72C;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.exp-arrow{color:#00355F;font-size:.65rem;line-height:1;}
+/* Agoda */
+.ota.agoda{color:#E4002B;}
+.agoda-ball{width:22px;height:22px;background:#E4002B;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:900;flex-shrink:0;}
+/* Airbnb */
+.ota.airbnb{color:#FF5A5F;}
+/* MakeMyTrip */
+.ota.mmt{gap:0;}
+.mmt-r{color:#E63027;}.mmt-b{color:#1A4D8F;}
+/* Trip.com */
+.ota.tripcom{color:#1677FF;}
+.trip-ball{width:22px;height:22px;background:#1677FF;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;flex-shrink:0;}
+/* Hotels.com */
+.ota.hotelscom{color:#CC0000;}
+/* Google Travel */
+.ota.google{gap:0;}
+.gb{color:#4285F4;}.gr{color:#EA4335;}.gy{color:#FBBC05;}.gg{color:#34A853;}.gk{color:#5f6368;font-weight:500;}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SERVICES */
+.services{background:var(--white);padding:112px 72px 0}
+.svc-header{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:48px;}
+.svc-desc{font-size:1.59375rem;line-height:1.5;color:var(--accent);max-width:440px;font-weight:600;}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:var(--r24);overflow:hidden;}
+/* individual service sections for deep-link */
+.sc-anchor{display:block;position:relative;}
+.sc{background:var(--white);padding:36px 28px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden;transition:background .25s var(--ease-out);scroll-margin-top:100px;}
+.sc.spotlight{animation:spotlight .9s var(--ease-out);}
+@keyframes spotlight{0%{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);}70%{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);}100%{background:var(--white);box-shadow:none;}}
+.sc:nth-child(5),.sc:nth-child(6),.sc:nth-child(7),.sc:nth-child(8){border-bottom:none}
+.sc:nth-child(4n){border-right:none}
+.sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-out);}
+.sc:hover::after{transform:scaleX(1)}
+.sc:hover{background:var(--bg-light)}
+.sc-num{font-size:.68rem;font-weight:700;color:var(--ink3);letter-spacing:.1em;margin-bottom:16px;}
+.sc-ico{width:48px;height:48px;border-radius:var(--r12);background:var(--bg-muted);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:20px;transition:background .25s,border-color .25s,transform .3s var(--ease-spring);}
+.sc:hover .sc-ico{background:var(--accent-soft);border-color:rgba(79,70,229,.2);transform:scale(1.08)}
+.sc h3{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.015em;line-height:1.35;}
+.sc p{font-size:.9rem;line-height:1.65;color:var(--ink2);margin-bottom:20px;}
+.sc-link{font-size:.84rem;font-weight:600;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:gap .22s var(--ease-out);}
+.sc:hover .sc-link{gap:9px}
+
+/* NUMBERS */
+.numbers{background:var(--bg-light);padding:112px 72px}
+.num-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:var(--r24);overflow:hidden;margin-bottom:56px;background:var(--white);box-shadow:var(--sh-xs);}
+.nc{padding:48px 40px;border-right:1px solid var(--border);transition:background .22s;}
+.nc:last-child{border-right:none}
+.nc:hover{background:var(--bg-light)}
+.nv{font-size:3.5rem;font-weight:700;letter-spacing:-.055em;line-height:1;margin-bottom:7px;color:var(--ink);}
+.nv.acc{background:linear-gradient(135deg,var(--accent),#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nl{font-size:.85rem;font-weight:500;color:var(--ink3);}
+.num-bottom{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start;}
+.nb-img{border-radius:var(--r24);overflow:hidden;aspect-ratio:16/10;border:1px solid var(--border);}
+.nb-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.9);transition:transform 6s ease;}
+.nb-img:hover img{transform:scale(1.04)}
+.nb-panel{background:var(--bg-dark);border-radius:var(--r24);border:1px solid rgba(255,255,255,.06);padding:32px;display:flex;flex-direction:column;gap:20px;}
+.live-row{display:flex;align-items:center;gap:8px;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.4);animation:sonar 2s infinite;flex-shrink:0;}
+.live-row span{font-size:.78rem;color:rgba(255,255,255,.38);letter-spacing:.04em;}
+.big-num{font-size:2.5rem;font-weight:700;color:#fff;letter-spacing:-.05em;line-height:1;}
+.big-lbl{font-size:.78rem;color:rgba(255,255,255,.38);margin-top:3px;}
+.bar-rows{display:flex;flex-direction:column;gap:10px;}
+.brow{display:flex;align-items:center;gap:10px;font-size:.78rem;}
+.bname{color:rgba(255,255,255,.38);width:88px;flex-shrink:0;font-weight:500;}
+.btrack{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.bfill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent-mid));transform-origin:left;animation:barGrow 1.4s var(--ease-out) both;}
+@keyframes barGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.bpct{color:rgba(255,255,255,.3);width:30px;text-align:right;flex-shrink:0;font-weight:500;}
+
+/* PLATFORM */
+.platform{background:var(--white);padding:112px 72px;}
+.plat-inner{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center;}
+.plat-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin:24px 0 34px;}
+.plat-list li{display:flex;align-items:center;gap:12px;padding:11px 15px;border-radius:var(--r12);font-size:.9375rem;font-weight:500;color:var(--ink2);border:1px solid transparent;transition:border-color .22s,background .22s,color .22s,transform .22s var(--ease-spring);}
+.plat-list li:hover{border-color:var(--border);background:var(--bg-light);color:var(--ink);transform:translateX(4px)}
+.chk{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:var(--accent-soft);border:1px solid rgba(79,70,229,.2);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--accent);transition:background .22s,color .22s,border-color .22s;}
+.plat-list li:hover .chk{background:var(--accent);color:#fff;border-color:var(--accent)}
+.dash-widget{background:var(--white);border-radius:var(--r24);border:1px solid var(--border);padding:26px;box-shadow:var(--sh-lg);transition:box-shadow .35s var(--ease-out),transform .35s var(--ease-out);}
+.dash-widget:hover{box-shadow:var(--sh-lg),var(--sh-accent);transform:translateY(-4px)}
+.dw-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.dw-label{font-size:.72rem;font-weight:700;color:var(--ink3);letter-spacing:.07em;text-transform:uppercase;}
+.dw-live{display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#16a34a;}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.kpi{background:var(--bg-light);border-radius:var(--r12);padding:15px;border:1px solid var(--border);transition:background .2s;}
+.kpi:hover{background:var(--accent-soft)}
+.kpi-l{font-size:.68rem;font-weight:700;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.kpi-v{font-size:1.5rem;font-weight:700;letter-spacing:-.04em;color:var(--ink);}
+.kpi-v.acc{color:var(--accent)}
+.kpi-d{font-size:.7rem;font-weight:600;color:#16a34a;margin-top:3px;}
+.dw-div{height:1px;background:var(--border);margin:12px 0;}
+.dw-bars{display:flex;flex-direction:column;gap:9px;}
+.dbar{display:flex;align-items:center;gap:10px;font-size:.78rem;}
+.dbar-n{color:var(--ink3);width:90px;flex-shrink:0;font-weight:500;}
+.dbar-t{flex:1;height:4px;background:var(--bg-muted);border-radius:2px;overflow:hidden;}
+.dbar-f{height:100%;background:var(--accent);border-radius:2px;opacity:.65;}
+.dbar-v{width:34px;text-align:right;color:var(--ink2);flex-shrink:0;font-weight:600;}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--bg-dark);padding:112px 72px;}
+.testi-head{margin-bottom:52px;}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.tc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r24);padding:36px;transition:background .28s var(--ease-out),border-color .28s,transform .3s var(--ease-spring),box-shadow .28s;}
+.tc:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.3);}
+.tc-quote{font-size:2.5rem;line-height:1;margin-bottom:14px;color:var(--accent-mid);font-weight:700;}
+.tc-text{font-size:.9375rem;line-height:1.8;color:rgba(255,255,255,.6);margin-bottom:28px;}
+.tc-author{display:flex;align-items:center;gap:12px;}
+.tc-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--accent),#818cf8);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;}
+.tc-info strong{display:block;font-size:.875rem;font-weight:600;color:#fff;letter-spacing:-.01em;}
+.tc-info span{font-size:.77rem;color:rgba(255,255,255,.38);}
+
+/* GALLERY */
+.gallery{background:var(--bg-light);padding:112px 72px 80px;}
+.gal-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:24px;}
+.ggrid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;}
+.gi{border-radius:var(--r16);overflow:hidden;position:relative;}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82);transition:filter .5s var(--ease-out),transform .6s var(--ease-out);}
+.gi:hover img{filter:brightness(.96);transform:scale(1.04)}
+.g1{grid-column:span 5;grid-row:span 2;min-height:480px;}
+.g2{grid-column:span 7;min-height:228px;}
+.g3{grid-column:span 4;min-height:244px;}
+.g4{grid-column:span 3;min-height:244px;}
+.gcap{position:absolute;bottom:0;left:0;right:0;padding:22px;background:linear-gradient(transparent,rgba(10,10,10,.76));}
+.gtag{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--accent);padding:3px 11px;border-radius:var(--rpill);margin-bottom:7px;}
+.gcap h4{font-size:.9rem;font-weight:600;color:#fff;letter-spacing:-.01em;}
+
+/* CTA */
+.cta-section{background:var(--bg-dark);padding:112px 72px;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;bottom:-200px;right:-100px;width:700px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(79,70,229,.14) 0%,transparent 68%);pointer-events:none;animation:glowFloat 9s ease-in-out infinite;}
+.cta-inner{max-width:620px;position:relative;z-index:1;}
+.cta-section h2{font-size:clamp(2.4rem,5vw,4.5rem);font-weight:700;letter-spacing:-.045em;line-height:1.05;margin-bottom:18px;color:#fff;}
+.cta-section h2 em{font-style:normal;color:var(--accent-mid);}
+.cta-section p{font-size:1.0625rem;color:rgba(255,255,255,.52);margin-bottom:34px;line-height:1.75;}
+.btn-wh{background:#fff;color:var(--ink);padding:13px 28px;border-radius:var(--rpill);font-size:.9375rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;display:inline-block;transition:background .2s,transform .22s var(--ease-spring),box-shadow .2s;}
+.btn-wh:hover{background:#f3f4f6;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.btn-ghost-dark{background:transparent;color:rgba(255,255,255,.6);padding:12px 28px;border-radius:var(--rpill);border:1px solid rgba(255,255,255,.14);font-size:.9375rem;font-weight:500;text-decoration:none;display:inline-block;transition:border-color .2s,color .2s,transform .22s var(--ease-spring);}
+.btn-ghost-dark:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9);transform:translateY(-1px)}
+
+/* FOOTER */
+footer{background:var(--bg-dark2);padding:72px 72px 36px;border-top:1px solid rgba(255,255,255,.05);}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:52px;margin-bottom:52px;}
+.fb-logo{font-size:.9375rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.02em;display:inline-flex;align-items:center;gap:7px;margin-bottom:14px;}
+.fb p{font-size:.875rem;color:rgba(255,255,255,.35);line-height:1.8;max-width:240px;margin-bottom:22px;}
+.fsoc{display:flex;gap:8px;}
+.fsoc a{width:34px;height:34px;border-radius:var(--r8);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.78rem;color:rgba(255,255,255,.42);text-decoration:none;transition:background .18s,border-color .18s,color .18s,transform .2s var(--ease-spring);}
+.fsoc a:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-2px)}
+.fc h4{font-size:.68rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:18px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.fc ul li a{font-size:.875rem;color:rgba(255,255,255,.38);text-decoration:none;transition:color .18s;}
+.fc ul li a:hover{color:rgba(255,255,255,.85)}
+.fc ul li{font-size:.875rem;color:rgba(255,255,255,.35);}
+.fbot{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+.fbot p{font-size:.78rem;color:rgba(255,255,255,.25);}
+.fbot span{color:var(--accent-mid);}
+.wafab{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.35rem;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.38);transition:transform .25s var(--ease-spring),box-shadow .2s;}
+.wafab:hover{transform:scale(1.12);box-shadow:0 8px 28px rgba(37,211,102,.5)}
+
+/* REVEAL */
+[data-reveal]{opacity:0;transform:translateY(32px);transition:opacity .75s var(--ease-out),transform .75s var(--ease-out);}
+[data-reveal="left"]{transform:translateX(-32px);}
+[data-reveal="right"]{transform:translateX(32px);}
+[data-reveal].revealed{opacity:1;transform:none;}
+[data-delay="1"]{transition-delay:.08s}[data-delay="2"]{transition-delay:.16s}[data-delay="3"]{transition-delay:.24s}[data-delay="4"]{transition-delay:.32s}
+[data-delay="5"]{transition-delay:.40s}[data-delay="6"]{transition-delay:.48s}[data-delay="7"]{transition-delay:.56s}[data-delay="8"]{transition-delay:.64s}
+
+/* UTILITIES */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.eyebrow::before{content:'';display:block;width:18px;height:1.5px;background:var(--accent);border-radius:2px;}
+h2.sh{font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1.1;letter-spacing:-.035em;color:var(--ink);margin-bottom:14px;}
+h2.sh.inv{color:#fff}
+p.sb{font-size:1.0625rem;line-height:1.75;color:var(--ink2);max-width:500px;}
+p.sb.inv{color:rgba(255,255,255,.5);}
+.btn-dark{background:var(--ink);color:#fff;padding:13px 28px;border-radius:var(--rpill);font-size:.9375rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;display:inline-block;transition:background .2s,transform .22s var(--ease-spring),box-shadow .2s;}
+.btn-dark:hover{background:#1a1a1a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.btn-ghost{background:transparent;color:var(--ink);padding:12px 28px;border-radius:var(--rpill);border:1px solid var(--border);font-size:.9375rem;font-weight:500;text-decoration:none;display:inline-block;transition:border-color .2s,background .2s,transform .22s var(--ease-spring);}
+.btn-ghost:hover{border-color:#9ca3af;background:var(--bg-light);transform:translateY(-1px)}
+.sec-pad{padding:112px 72px;}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav{left:20px;right:20px;transform:none;border-radius:var(--r24);}
+  nav.scrolled{transform:none;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:100px 28px 72px;}
+  .hero-right{display:none;}
+  .services,.numbers,.platform,.gallery,.cta-section,.sec-pad{padding:88px 28px;}
+  .services{padding-bottom:0;}
+  .svc-grid{grid-template-columns:repeat(2,1fr);}
+  .sc:nth-child(4n){border-right:1px solid var(--border);}
+  .sc:nth-child(2n){border-right:none;}
+  .sc:nth-child(5),.sc:nth-child(6),.sc:nth-child(7),.sc:nth-child(8){border-bottom:1px solid var(--border);}
+  .sc:nth-child(7),.sc:nth-child(8){border-bottom:none;}
+  .num-grid{grid-template-columns:repeat(2,1fr);}
+  .num-bottom,.plat-inner{grid-template-columns:1fr;gap:20px;}
+  .tgrid{grid-template-columns:1fr;}
+  .ggrid{grid-template-columns:1fr 1fr;}
+  .g1,.g2,.g3,.g4{grid-column:span 1;grid-row:span 1;min-height:220px;}
+  .ft{grid-template-columns:1fr 1fr;gap:32px;}
+  .svc-header,.gal-header{flex-direction:column;align-items:flex-start;gap:16px;}
+}
+@media(max-width:640px){
+  .hero-stats{flex-direction:column;border-radius:var(--r16);}
+  .hstat{border-right:none;border-bottom:1px solid var(--border);}
+  .hstat:last-child{border-bottom:none;}
+  .svc-grid,.num-grid,.tgrid{grid-template-columns:1fr;}
+  .sc:nth-child(n){border-right:none;border-bottom:1px solid var(--border);}
+  .sc:last-child{border-bottom:none;}
+  .ggrid{grid-template-columns:1fr;}
+  .ft{grid-template-columns:1fr;}
+  .hero h1{font-size:2.6rem;}
+  .cta-section h2{font-size:2.2rem;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo"><span class="logo-dot"></span>HotelSathi</a>
+  <ul class="nav-links">
+    <li class="nav-has-drop" id="drop-parent">
+      <button class="drop-trigger" id="svc-trigger" aria-expanded="false" aria-haspopup="true">
+        Services
+        <span class="drop-chevron" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <div class="drop-menu" id="svc-drop" role="menu">
+        <div class="drop-grid">
+          <a href="#sc-ota" class="drop-item" role="menuitem" data-sc="sc-ota"><span class="di-title">OTA Listing Support</span><span class="di-sub">Booking, Agoda, MakeMyTrip &amp; more</span></a>
+          <a href="#sc-rev" class="drop-item" role="menuitem" data-sc="sc-rev"><span class="di-title">Revenue Management</span><span class="di-sub">Maximize RevPAR &amp; occupancy</span></a>
+          <div class="drop-row-divider"></div>
+          <a href="#sc-price" class="drop-item" role="menuitem" data-sc="sc-price"><span class="di-title">Pricing Optimization</span><span class="di-sub">AI-driven dynamic pricing</span></a>
+          <a href="#sc-mkt" class="drop-item" role="menuitem" data-sc="sc-mkt"><span class="di-title">Hotel Marketing</span><span class="di-sub">Performance &amp; brand campaigns</span></a>
+          <div class="drop-row-divider"></div>
+          <a href="#sc-train" class="drop-item" role="menuitem" data-sc="sc-train"><span class="di-title">Hospitality Training</span><span class="di-sub">Elevate guest experience &amp; loyalty</span></a>
+          <a href="#sc-web" class="drop-item" role="menuitem" data-sc="sc-web"><span class="di-title">Website Development</span><span class="di-sub">Direct-booking ready websites</span></a>
+          <div class="drop-row-divider"></div>
+          <a href="#sc-3d" class="drop-item" role="menuitem" data-sc="sc-3d"><span class="di-title">3D Hotel Tours</span><span class="di-sub">Immersive virtual walkthroughs</span></a>
+          <a href="#sc-ai" class="drop-item" role="menuitem" data-sc="sc-ai"><span class="di-title">AI Hotel Analytics</span><span class="di-sub">Predictive insights &amp; dashboards</span></a>
+        </div>
+        <div class="drop-footer">
+          <span class="drop-footer-txt">8 services tailored for Nepal's hospitality industry</span>
+          <a href="#services" class="drop-footer-link">View all →</a>
+        </div>
+      </div>
+    </li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Click to Connect</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-pulse"></span>Nepal's #1 Hospitality Growth Partner</div>
+    <h1>Grow your hotel<br><em>smarter, faster,</em><br>higher.</h1>
+    <p class="hero-sub">We empower hotels with OTA management, AI driven pricing guidance, revenue analytics, SM promotions and guest engagement tools — all in one platform.</p>
+    <div class="hero-stats">
+      <div class="hstat"><strong>320+</strong><span>Hotels powered</span></div>
+      <div class="hstat"><strong>30+</strong><span>OTA channels</span></div>
+      <div class="hstat"><strong>+38%</strong><span>Revenue lift</span></div>
+      <div class="hstat"><strong>24/7</strong><span>Support</span></div>
+    </div>
+  </div>
+  <!-- DYNAMIC CHART PANEL — tabbed interactive -->
+  <div class="hero-right">
+    <div class="hero-chart-card">
+
+      <!-- Tab buttons -->
+      <div class="chart-tabs">
+        <button class="chart-tab active" data-tab="revenue">Revenue</button>
+        <button class="chart-tab" data-tab="occupancy">Occupancy</button>
+        <button class="chart-tab" data-tab="adr">ADR</button>
+      </div>
+
+      <!-- TAB: Revenue -->
+      <div class="tab-panel active" id="tab-revenue">
+        <div class="tab-header">
+          <div>
+            <div class="hcc-title">Monthly Revenue</div>
+            <div class="hcc-sub">Bookings <span class="acc">↑ 38% YoY</span></div>
+          </div>
+          <div class="live-chip"><span class="live-dot-sm"></span>Live</div>
+        </div>
+        <div class="line-chart-wrap">
+          <svg class="line-svg" viewBox="0 0 320 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- area fill -->
+            <path class="chart-area" d="M0,90 C30,85 55,72 80,65 C105,58 120,62 160,42 C200,22 240,18 280,8 L320,5 L320,120 L0,120Z" fill="url(#revGrad)"/>
+            <!-- line -->
+            <path class="chart-line" d="M0,90 C30,85 55,72 80,65 C105,58 120,62 160,42 C200,22 240,18 280,8 L320,5" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- dots -->
+            <circle cx="0"   cy="90" r="3.5" fill="#4f46e5" opacity="0.5"/>
+            <circle cx="53"  cy="72" r="3.5" fill="#4f46e5" opacity="0.5"/>
+            <circle cx="107" cy="60" r="3.5" fill="#4f46e5" opacity="0.5"/>
+            <circle cx="160" cy="42" r="3.5" fill="#4f46e5" opacity="0.5"/>
+            <circle cx="213" cy="20" r="3.5" fill="#4f46e5" opacity="0.5"/>
+            <!-- current glowing dot -->
+            <circle cx="320" cy="5"  r="5" fill="#4f46e5"/>
+            <circle cx="320" cy="5"  r="9" fill="#4f46e5" opacity="0.2" class="pulse-ring"/>
+          </svg>
+          <div class="chart-x-labels">
+            <span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span>
+          </div>
+        </div>
+        <div class="tab-kpis">
+          <div class="tkpi"><div class="tkpi-l">This Month</div><div class="tkpi-v acc">NPR 84K</div><div class="tkpi-d">↑ 17% vs Dec</div></div>
+          <div class="tkpi"><div class="tkpi-l">Last Month</div><div class="tkpi-v">NPR 72K</div><div class="tkpi-d">↑ 20% vs Nov</div></div>
+          <div class="tkpi"><div class="tkpi-l">YoY Growth</div><div class="tkpi-v acc">+38%</div><div class="tkpi-d">vs Jan last year</div></div>
+          <div class="tkpi"><div class="tkpi-l">Channels</div><div class="tkpi-v">32 OTAs</div><div class="tkpi-d">All synced live</div></div>
+        </div>
+      </div>
+
+      <!-- TAB: Occupancy -->
+      <div class="tab-panel" id="tab-occupancy">
+        <div class="tab-header">
+          <div>
+            <div class="hcc-title">Occupancy Rate</div>
+            <div class="hcc-sub">Avg this month <span class="acc">↑ 87.4%</span></div>
+          </div>
+          <div class="live-chip"><span class="live-dot-sm"></span>Live</div>
+        </div>
+        <div class="occ-bars">
+          <div class="occ-row"><span class="occ-lbl">Mon</span><div class="occ-track"><div class="occ-fill" style="--w:92%">92%</div></div></div>
+          <div class="occ-row"><span class="occ-lbl">Tue</span><div class="occ-track"><div class="occ-fill" style="--w:78%">78%</div></div></div>
+          <div class="occ-row"><span class="occ-lbl">Wed</span><div class="occ-track"><div class="occ-fill" style="--w:85%">85%</div></div></div>
+          <div class="occ-row"><span class="occ-lbl">Thu</span><div class="occ-track"><div class="occ-fill" style="--w:88%">88%</div></div></div>
+          <div class="occ-row"><span class="occ-lbl">Fri</span><div class="occ-track"><div class="occ-fill" style="--w:97%">97%</div></div></div>
+          <div class="occ-row"><span class="occ-lbl">Sat</span><div class="occ-track"><div class="occ-fill" style="--w:100%" data-current="true">100%</div></div></div>
+          <div class="occ-row"><span class="occ-lbl">Sun</span><div class="occ-track"><div class="occ-fill" style="--w:82%">82%</div></div></div>
+        </div>
+        <div class="tab-kpis">
+          <div class="tkpi"><div class="tkpi-l">This Week</div><div class="tkpi-v acc">87.4%</div><div class="tkpi-d">↑ 12% vs last</div></div>
+          <div class="tkpi"><div class="tkpi-l">Peak Day</div><div class="tkpi-v">Saturday</div><div class="tkpi-d">100% full</div></div>
+          <div class="tkpi"><div class="tkpi-l">Lowest Day</div><div class="tkpi-v">Tuesday</div><div class="tkpi-d">78% — opportunity</div></div>
+          <div class="tkpi"><div class="tkpi-l">YoY</div><div class="tkpi-v acc">+22%</div><div class="tkpi-d">vs same period</div></div>
+        </div>
+      </div>
+
+      <!-- TAB: ADR -->
+      <div class="tab-panel" id="tab-adr">
+        <div class="tab-header">
+          <div>
+            <div class="hcc-title">Average Daily Rate</div>
+            <div class="hcc-sub">Per room/night <span class="acc">↑ 32% vs last month</span></div>
+          </div>
+          <div class="live-chip"><span class="live-dot-sm"></span>Live</div>
+        </div>
+        <div class="adr-donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#f3f4f6" stroke-width="14"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#4f46e5" stroke-width="14"
+              stroke-dasharray="301.6" stroke-dashoffset="90"
+              stroke-linecap="round" transform="rotate(-90 60 60)"
+              class="donut-arc"/>
+            <text x="60" y="55" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#0a0a0a">NPR</text>
+            <text x="60" y="73" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#4f46e5">8,240</text>
+          </svg>
+          <div class="adr-legend">
+            <div class="adr-leg-item"><div class="adr-dot" style="background:#4f46e5"></div><div><div class="adr-leg-lbl">Standard Room</div><div class="adr-leg-val">NPR 6,500</div></div></div>
+            <div class="adr-leg-item"><div class="adr-dot" style="background:#818cf8"></div><div><div class="adr-leg-lbl">Deluxe Room</div><div class="adr-leg-val">NPR 8,800</div></div></div>
+            <div class="adr-leg-item"><div class="adr-dot" style="background:#a5b4fc"></div><div><div class="adr-leg-lbl">Suite</div><div class="adr-leg-val">NPR 14,200</div></div></div>
+          </div>
+        </div>
+        <div class="tab-kpis">
+          <div class="tkpi"><div class="tkpi-l">Blended ADR</div><div class="tkpi-v acc">NPR 8,240</div><div class="tkpi-d">↑ 32% vs last month</div></div>
+          <div class="tkpi"><div class="tkpi-l">RevPAR</div><div class="tkpi-v acc">NPR 7,194</div><div class="tkpi-d">↑ 38% YoY</div></div>
+          <div class="tkpi"><div class="tkpi-l">Best Rate Day</div><div class="tkpi-v">Sat / Sun</div><div class="tkpi-d">Weekend premium</div></div>
+          <div class="tkpi"><div class="tkpi-l">Vs Comp Set</div><div class="tkpi-v acc">+18%</div><div class="tkpi-d">Above market avg</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TICKER — pure HTML, zero SVG text, pixel-perfect every browser -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="tick"><span class="ota booking">Booking<span class="dc">.com</span></span></span>
+    <span class="tick"><span class="ota expedia"><span class="exp-box"><span class="exp-arrow">&#9658;</span></span>expedia</span></span>
+    <span class="tick"><span class="ota agoda"><span class="agoda-ball">a</span>goda</span></span>
+    <span class="tick"><span class="ota airbnb">airbnb</span></span>
+    <span class="tick"><span class="ota mmt"><span class="mmt-r">Make</span><span class="mmt-b">My</span><span class="mmt-r">Trip</span></span></span>
+    <span class="tick"><span class="ota tripcom"><span class="trip-ball">✈</span>Trip.com</span></span>
+    <span class="tick"><span class="ota hotelscom">Hotels<span class="dc">.com</span></span></span>
+    <span class="tick"><span class="ota google"><span class="gb">G</span><span class="gr">o</span><span class="gy">o</span><span class="gb">g</span><span class="gg">l</span><span class="gr">e</span><span class="gk"> Travel</span></span></span>
+    <span class="tick"><span class="ota booking">Booking<span class="dc">.com</span></span></span>
+    <span class="tick"><span class="ota expedia"><span class="exp-box"><span class="exp-arrow">&#9658;</span></span>expedia</span></span>
+    <span class="tick"><span class="ota agoda"><span class="agoda-ball">a</span>goda</span></span>
+    <span class="tick"><span class="ota airbnb">airbnb</span></span>
+    <span class="tick"><span class="ota mmt"><span class="mmt-r">Make</span><span class="mmt-b">My</span><span class="mmt-r">Trip</span></span></span>
+    <span class="tick"><span class="ota tripcom"><span class="trip-ball">✈</span>Trip.com</span></span>
+    <span class="tick"><span class="ota hotelscom">Hotels<span class="dc">.com</span></span></span>
+    <span class="tick"><span class="ota google"><span class="gb">G</span><span class="gr">o</span><span class="gy">o</span><span class="gb">g</span><span class="gg">l</span><span class="gr">e</span><span class="gk"> Travel</span></span></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="svc-header" data-reveal>
+    <div>
+      <div class="eyebrow">What we do</div>
+      <h2 class="sh">Everything your hotel<br>needs to grow.</h2>
+    </div>
+    <p class="svc-desc">Eight services. One partner. Built specifically for Nepal's hospitality industry.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="sc" id="sc-ota" data-reveal data-delay="1"><div class="sc-num">01</div><div class="sc-ico">🏨</div><h3>OTA Listing Support</h3><p>Unlock your property's full booking potential by promoting it on major OTAs like Booking, Agoda, MakeMyTrip and achieve higher rankings to increase your online visibility.</p><a href="ota-listing.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-rev" data-reveal data-delay="2"><div class="sc-num">02</div><div class="sc-ico">📈</div><h3>Revenue Management</h3><p>Lift RevPAR with daily yield strategies built by certified revenue management professionals.</p><a href="revenue-management.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-price" data-reveal data-delay="3"><div class="sc-num">03</div><div class="sc-ico">💰</div><h3>Pricing Optimization</h3><p>Dynamic AI pricing that reads demand, events &amp; competitor rates 24/7 to maximise your ADR.</p><a href="pricing-optimization.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-mkt" data-reveal data-delay="4"><div class="sc-num">04</div><div class="sc-ico">📣</div><h3>Hotel Marketing</h3><p>Performance ads, SEO &amp; social campaigns built specifically for Nepal's travel landscape.</p><a href="hotel-marketing.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-train" data-reveal data-delay="5"><div class="sc-num">05</div><div class="sc-ico">🎓</div><h3>Hospitality Training</h3><p>Deliver consistent exceptional guest experience &amp; increase customers' loyalty using the expertise of our hospitality trainers.</p><a href="hospitality-training.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-web" data-reveal data-delay="6"><div class="sc-num">06</div><div class="sc-ico">🌐</div><h3>Website Development</h3><p>Conversion-first hotel websites with built-in booking engines, fast and mobile-ready.</p><a href="website-development.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-3d" data-reveal data-delay="7"><div class="sc-num">07</div><div class="sc-ico">🎥</div><h3>3D Hotel Tours</h3><p>Immersive virtual walkthroughs that turn curious browsers into confirmed bookers.</p><a href="3d-tours.html" class="sc-link">Learn more →</a></div>
+    <div class="sc" id="sc-ai" data-reveal data-delay="8"><div class="sc-num">08</div><div class="sc-ico">🤖</div><h3>AI Hotel Analytics</h3><p>Predict demand, optimise spend &amp; spot revenue opportunities in real time with AI.</p><a href="ai-analytics.html" class="sc-link">Learn more →</a></div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers sec-pad" id="numbers">
+  <div class="eyebrow" data-reveal>By the numbers</div>
+  <h2 class="sh" data-reveal>Results that speak<br>for themselves.</h2>
+  <p class="sb" data-reveal style="margin-bottom:52px">Real metrics from real hotels across Nepal — tracked, measured, and delivered.</p>
+  <div class="num-grid">
+    <div class="nc" data-reveal data-delay="1"><div class="nv acc" data-count="320" data-suffix="+">0+</div><div class="nl">Hotels powered</div></div>
+    <div class="nc" data-reveal data-delay="2"><div class="nv" data-count-cur="2.8">₹0B</div><div class="nl">Bookings driven</div></div>
+    <div class="nc" data-reveal data-delay="3"><div class="nv acc" data-count="38" data-suffix="%">0%</div><div class="nl">Avg. revenue lift</div></div>
+    <div class="nc" data-reveal data-delay="4"><div class="nv" data-count-star="4.9">0★</div><div class="nl">Partner rating</div></div>
+  </div>
+  <div class="num-bottom">
+    <div class="nb-img" data-reveal="left"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1000&q=80" alt="Hotel lobby" loading="lazy"/></div>
+    <div class="nb-panel" data-reveal="right">
+      <div class="live-row"><div class="live-dot"></div><span>Real-time channel sync active</span></div>
+      <div><div class="big-num">+32% ADR</div><div class="big-lbl">Today vs. last month average daily rate</div></div>
+      <div class="bar-rows">
+        <div class="brow"><span class="bname">Booking.com</span><div class="btrack"><div class="bfill" style="width:42%"></div></div><span class="bpct">42%</span></div>
+        <div class="brow"><span class="bname">Expedia</span><div class="btrack"><div class="bfill" style="width:28%"></div></div><span class="bpct">28%</span></div>
+        <div class="brow"><span class="bname">Direct</span><div class="btrack"><div class="bfill" style="width:20%"></div></div><span class="bpct">20%</span></div>
+        <div class="brow"><span class="bname">Other OTAs</span><div class="btrack"><div class="bfill" style="width:10%"></div></div><span class="bpct">10%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<section class="platform" id="platform">
+  <div class="plat-inner">
+    <div data-reveal="left">
+      <div class="eyebrow">The HotelSathi platform</div>
+      <h2 class="sh">One dashboard for your entire hotel business.</h2>
+      <p class="sb">Manage rates, inventory, marketing campaigns and analytics in one place — built for general managers, not engineers.</p>
+      <ul class="plat-list">
+        <li><span class="chk">✓</span>Smart rate recommendations</li>
+        <li><span class="chk">✓</span>Channel manager for 30+ OTAs</li>
+        <li><span class="chk">✓</span>AI demand forecasting</li>
+        <li><span class="chk">✓</span>Direct booking widget</li>
+      </ul>
+      <a href="#services" class="btn-dark">See all features</a>
+    </div>
+    <div data-reveal="right">
+      <div class="dash-widget">
+        <div class="dw-top"><span class="dw-label">Live Dashboard</span><span class="dw-live"><span class="live-dot" style="width:6px;height:6px;box-shadow:none"></span>&nbsp;Live</span></div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-l">Occupancy</div><div class="kpi-v acc">87.4%</div><div class="kpi-d">↑ 12% vs last week</div></div>
+          <div class="kpi"><div class="kpi-l">Avg. Daily Rate</div><div class="kpi-v">NPR 8,240</div><div class="kpi-d">↑ 32% vs last month</div></div>
+        </div>
+        <div class="kpi"><div class="kpi-l">RevPAR</div><div class="kpi-v acc">NPR 7,194</div><div class="kpi-d">↑ 38% year-over-year</div></div>
+        <div class="dw-div"></div>
+        <div class="dw-bars">
+          <div class="dbar"><span class="dbar-n">Booking.com</span><div class="dbar-t"><div class="dbar-f" style="width:42%"></div></div><span class="dbar-v">42%</span></div>
+          <div class="dbar"><span class="dbar-n">Expedia</span><div class="dbar-t"><div class="dbar-f" style="width:28%"></div></div><span class="dbar-v">28%</span></div>
+          <div class="dbar"><span class="dbar-n">Direct</span><div class="dbar-t"><div class="dbar-f" style="width:20%"></div></div><span class="dbar-v">20%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="testi-head" data-reveal>
+    <div class="eyebrow" style="color:var(--accent-mid)"><span style="display:inline-block;width:18px;height:1.5px;background:var(--accent-mid);border-radius:2px;vertical-align:middle;margin-right:8px"></span>Loved by hoteliers</div>
+    <h2 class="sh inv">What our partners say.</h2>
+    <p class="sb inv">Real stories from hotels across Nepal that have transformed their revenue.</p>
+  </div>
+  <div class="tgrid">
+    <div class="tc" data-reveal data-delay="1"><div class="tc-quote">"</div><p class="tc-text">Our direct bookings tripled in 6 months. The HotelSathi team feels like an extension of our own front desk.</p><div class="tc-author"><div class="tc-av">AS</div><div class="tc-info"><strong>Anjali Shrestha</strong><span>GM, Pokhara Lakeview Resort</span></div></div></div>
+    <div class="tc" data-reveal data-delay="2"><div class="tc-quote">"</div><p class="tc-text">Finally a partner who understands both Nepali hospitality and global OTAs. Our RevPAR is up 42%.</p><div class="tc-author"><div class="tc-av">BT</div><div class="tc-info"><strong>Bikash Thapa</strong><span>Owner, Heritage Inn Bhaktapur</span></div></div></div>
+    <div class="tc" data-reveal data-delay="3"><div class="tc-quote">"</div><p class="tc-text">Their 3D tours and AI pricing completely changed how we sell trekking packages. An absolute game changer.</p><div class="tc-author"><div class="tc-av">PL</div><div class="tc-info"><strong>Pema Lama</strong><span>Director, Annapurna Trail Lodges</span></div></div></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gal-header" data-reveal>
+    <div><div class="eyebrow">Our work</div><h2 class="sh">Hotels we've helped shine.</h2></div>
+    <a href="#" class="btn-ghost" style="flex-shrink:0">View full gallery →</a>
+  </div>
+  <div class="ggrid">
+    <div class="gi g1" data-reveal="left"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80" alt="Pokhara Lakeview Resort" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Pokhara Lakeview Resort</h4></div></div>
+    <div class="gi g2" data-reveal><img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900&q=80" alt="Heritage Inn Bhaktapur" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Heritage Inn Bhaktapur</h4></div></div>
+    <div class="gi g3" data-reveal data-delay="1"><img src="https://images.unsplash.com/photo-1549294413-26f195200c16?w=700&q=80" alt="Annapurna Trail Lodges" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Annapurna Trail Lodges</h4></div></div>
+    <div class="gi g4" data-reveal data-delay="2"><img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80" alt="Boutique Stays Kathmandu" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Boutique Stays of Kathmandu</h4></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-glow"></div>
+  <div class="cta-inner" data-reveal>
+    <h2>Ready to fill <em>more rooms?</em></h2>
+    <p>Get a free 30-minute revenue audit. No obligations, just real opportunities for your hotel in Nepal.</p>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <a href="mailto:hello@hotelsathi.com" class="btn-wh">Click to Connect</a>
+      <a href="tel:+9779800000000" class="btn-ghost-dark">+977 980 000 0000</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="fb" data-reveal="left">
+      <a href="#" class="fb-logo"><span class="logo-dot"></span>HotelSathi</a>
+      <p>Nepal's hospitality growth partner — combining revenue management, marketing &amp; AI to lift bookings, ratings and revenue.</p>
+      <div class="fsoc"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">in</a><a href="#" aria-label="LinkedIn">li</a></div>
+    </div>
+    <div class="fc" data-reveal data-delay="1"><h4>Services</h4><ul><li><a href="ota-listing.html">OTA Management</a></li><li><a href="revenue-management.html">Revenue Optimization</a></li><li><a href="hotel-marketing.html">Hotel Marketing</a></li><li><a href="3d-tours.html">3D Tours</a></li><li><a href="ai-analytics.html">AI Analytics</a></li></ul></div>
+    <div class="fc" data-reveal data-delay="2"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div class="fc" data-reveal="right"><h4>Get in touch</h4><ul><li>Thamel, Kathmandu, Nepal</li><li><a href="tel:+9779800000000">+977 980 000 0000</a></li><li><a href="mailto:hello@hotelsathi.com">hello@hotelsathi.com</a></li></ul></div>
+  </div>
+  <div class="fbot"><p>© 2026 HotelSathi. All rights reserved.</p><p>Made with <span>♥</span> in Nepal</p></div>
+</footer>
+<a href="https://wa.me/9779800000000" class="wafab" target="_blank">💬</a>
+
+<script>
+const C=document.getElementById('cur'),R=document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;C.style.left=mx+'px';C.style.top=my+'px'});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;R.style.left=rx+'px';R.style.top=ry+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.sc,.tc,.nc,.kpi').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cur-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-hover'));
+});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60),{passive:true});
+
+/* Dropdown */
+const dropParent=document.getElementById('drop-parent');
+const dropTrigger=document.getElementById('svc-trigger');
+const dropMenu=document.getElementById('svc-drop');
+let dropTimer=null;
+function openDrop(){clearTimeout(dropTimer);dropParent.classList.add('drop-open');dropMenu.classList.add('open');dropTrigger.setAttribute('aria-expanded','true');}
+function closeDrop(){dropTimer=setTimeout(()=>{dropParent.classList.remove('drop-open');dropMenu.classList.remove('open');dropTrigger.setAttribute('aria-expanded','false');},140);}
+dropParent.addEventListener('mouseenter',openDrop);
+dropParent.addEventListener('mouseleave',closeDrop);
+dropMenu.addEventListener('mouseenter',openDrop);
+dropMenu.addEventListener('mouseleave',closeDrop);
+dropTrigger.addEventListener('click',e=>{e.preventDefault();dropMenu.classList.contains('open')?closeDrop():openDrop();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrop();});
+
+/* Dropdown deep-link with spotlight */
+dropMenu.querySelectorAll('.drop-item[data-sc]').forEach(item=>{
+  item.addEventListener('click',e=>{
+    e.preventDefault();
+    closeDrop();
+    const targetId=item.dataset.sc;
+    const target=document.getElementById(targetId);
+    if(!target)return;
+    const offset=target.getBoundingClientRect().top+window.scrollY-110;
+    window.scrollTo({top:offset,behavior:'smooth'});
+    setTimeout(()=>{
+      target.classList.remove('spotlight');
+      void target.offsetWidth;
+      target.classList.add('spotlight');
+    },600);
+  });
+});
+
+/* Scroll reveal */
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');revealObs.unobserve(e.target);}});
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('[data-reveal]').forEach(el=>revealObs.observe(el));
+
+/* Count-up */
+function easeOut(t){return 1-Math.pow(1-t,3)}
+function countUp(el,end,dur,fmt){let s=null;const f=t=>{if(!s)s=t;const p=Math.min((t-s)/dur,1);el.textContent=fmt(easeOut(p)*end);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f);}
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,suf=el.dataset.suffix||'';
+    if(el.dataset.count)countUp(el,+el.dataset.count,1600,v=>Math.floor(v)+suf);
+    if(el.dataset.countCur)countUp(el,+el.dataset.countCur,1500,v=>'₹'+v.toFixed(1)+'B');
+    if(el.dataset.countStar)countUp(el,+el.dataset.countStar,1500,v=>v.toFixed(1)+'★');
+    cObs.unobserve(el);
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count],[data-count-cur],[data-count-star]').forEach(el=>cObs.observe(el));
+
+/* Hero glow parallax */
+const g1=document.querySelector('.hero-glow'),g2=document.querySelector('.hero-glow2');
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/innerWidth-.5)*22,y=(e.clientY/innerHeight-.5)*22;
+  if(g1)g1.style.transform=`translate(${x}px,${y}px)`;
+  if(g2)g2.style.transform=`translate(${-x*.6}px,${-y*.6}px)`;
+});
+
+/* Service card tilt */
+document.querySelectorAll('.sc').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*6;
+    const y=((e.clientY-r.top)/r.height-.5)*4;
+    card.style.transform=`perspective(600px) rotateX(${-y}deg) rotateY(${x}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+
+/* ══ Chart tabs ══ */
+const tabs=document.querySelectorAll('.chart-tab');
+const panels=document.querySelectorAll('.tab-panel');
+tabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    const target=tab.dataset.tab;
+    tabs.forEach(t=>t.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel=document.getElementById('tab-'+target);
+    panel.classList.add('active');
+    // Re-trigger animations by cloning
+    panel.querySelectorAll('.occ-fill').forEach(el=>{
+      el.style.width='0';
+      void el.offsetWidth;
+      el.style.width=el.style.getPropertyValue('--w')||el.style.cssText.match(/--w:([^;]+)/)?.[1]||'0';
+    });
+    // Re-trigger SVG animations
+    panel.querySelectorAll('.chart-line,.donut-arc,.chart-area').forEach(el=>{
+      el.style.animation='none';
+      void el.offsetWidth;
+      el.style.animation='';
+    });
+  });
+});
+</script>
+</body>
+</html>
