@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OTA Listing Support — HotelSathi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#0a0a0a;-webkit-font-smoothing:antialiased;}
+:root{--accent:#4f46e5;--accent-soft:#eef2ff;--accent-mid:#a5b4fc;--ink:#0a0a0a;--ink2:#6b7280;--ink3:#9ca3af;--border:#e5e7eb;--bg-light:#f9fafb;--bg-muted:#f3f4f6;--r16:16px;--r24:24px;--rpill:100px;}
+/* NAV */
+.top-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 56px;display:flex;align-items:center;justify-content:space-between;}
+.top-nav .logo{font-size:.9375rem;font-weight:700;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:7px;}
+.logo-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+.back-link{font-size:.875rem;font-weight:500;color:var(--ink2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .18s;}
+.back-link:hover{color:var(--accent)}
+/* HERO */
+.page-hero{background:linear-gradient(135deg,var(--accent-soft) 0%,#fff 60%);padding:80px 56px 64px;border-bottom:1px solid var(--border);}
+.page-hero .tag{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;padding:5px 14px;border-radius:var(--rpill);font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;}
+.page-hero h1{font-size:clamp(2.2rem,5vw,4rem);font-weight:700;letter-spacing:-.04em;line-height:1.05;margin-bottom:18px;color:var(--ink);}
+.page-hero h1 em{font-style:normal;color:var(--accent);}
+.page-hero .intro{font-size:1.125rem;line-height:1.75;color:var(--ink2);max-width:640px;}
+/* CONTENT */
+.content{max-width:1100px;margin:0 auto;padding:64px 56px;}
+h2.sec{font-size:1.75rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);margin-bottom:12px;}
+p.body{font-size:1rem;line-height:1.8;color:var(--ink2);margin-bottom:24px;}
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0 48px;}
+.card{background:var(--bg-light);border:1px solid var(--border);border-radius:var(--r16);padding:28px;}
+.card-icon{font-size:2rem;margin-bottom:14px;}
+.card h3{font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.015em;}
+.card p{font-size:.9rem;line-height:1.65;color:var(--ink2);}
+/* OTA PROFILES */
+.ota-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:32px 0 48px;}
+.ota-card{border:1px solid var(--border);border-radius:var(--r16);padding:28px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s;}
+.ota-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08);}
+.ota-header{display:flex;align-items:center;gap:12px;}
+.ota-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff;flex-shrink:0;}
+.ota-name{font-size:1.1rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.ota-reach{font-size:.8rem;color:var(--ink3);}
+.ota-stat{display:flex;gap:16px;flex-wrap:wrap;}
+.ostat{text-align:center;padding:10px 16px;background:var(--bg-light);border-radius:10px;flex:1;}
+.ostat strong{display:block;font-size:1.2rem;font-weight:700;color:var(--accent);letter-spacing:-.03em;}
+.ostat span{font-size:.72rem;color:var(--ink3);}
+.ota-desc{font-size:.875rem;line-height:1.65;color:var(--ink2);}
+/* CHART — Why OTA */
+.chart-section{background:var(--bg-light);border-radius:var(--r24);padding:40px;margin:32px 0 48px;border:1px solid var(--border);}
+.chart-title{font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;}
+.chart-sub{font-size:.875rem;color:var(--ink3);margin-bottom:28px;}
+.horiz-bars{display:flex;flex-direction:column;gap:14px;}
+.hbar-row{display:flex;align-items:center;gap:14px;}
+.hbar-label{width:130px;flex-shrink:0;font-size:.85rem;font-weight:600;color:var(--ink2);}
+.hbar-track{flex:1;height:32px;background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.hbar-fill{height:100%;border-radius:8px;display:flex;align-items:center;padding-left:12px;font-size:.78rem;font-weight:700;color:#fff;transition:width 1.2s cubic-bezier(.16,1,.3,1);}
+.hbar-val{width:50px;text-align:right;font-size:.85rem;font-weight:700;color:var(--ink);flex-shrink:0;}
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0;margin:32px 0 48px;position:relative;}
+.step{display:flex;gap:20px;padding:0 0 36px 0;}
+.step:last-child{padding-bottom:0;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;position:relative;z-index:1;}
+.step-line{position:absolute;left:17px;top:36px;bottom:0;width:2px;background:var(--border);}
+.step:last-child .step-line{display:none;}
+.step-body{padding-top:6px;}
+.step-body h4{font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:5px;letter-spacing:-.015em;}
+.step-body p{font-size:.9rem;line-height:1.65;color:var(--ink2);}
+/* COMPARISON TABLE */
+.cmp-table{width:100%;border-collapse:collapse;margin:32px 0 48px;border-radius:var(--r16);overflow:hidden;border:1px solid var(--border);}
+.cmp-table th{background:var(--ink);color:#fff;padding:14px 20px;text-align:left;font-size:.82rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.cmp-table td{padding:14px 20px;border-bottom:1px solid var(--border);font-size:.9rem;color:var(--ink2);vertical-align:top;}
+.cmp-table tr:last-child td{border-bottom:none;}
+.cmp-table tr:nth-child(even) td{background:var(--bg-light);}
+.yes{color:#16a34a;font-weight:700;}
+.no{color:#dc2626;font-weight:700;}
+/* IMPACT CALLOUT */
+.callout{background:linear-gradient(135deg,var(--accent) 0%,#818cf8 100%);border-radius:var(--r24);padding:48px;margin:48px 0;color:#fff;text-align:center;}
+.callout h3{font-size:1.8rem;font-weight:700;letter-spacing:-.03em;margin-bottom:12px;}
+.callout p{font-size:1.0625rem;opacity:.8;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7;}
+.callout a{background:#fff;color:var(--accent);padding:13px 32px;border-radius:var(--rpill);font-weight:700;font-size:.9375rem;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .2s;}
+.callout a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+/* FOOTER */
+.page-foot{border-top:1px solid var(--border);padding:28px 56px;display:flex;justify-content:space-between;align-items:center;background:var(--bg-light);}
+.page-foot p{font-size:.82rem;color:var(--ink3);}
+.page-foot a{font-size:.82rem;color:var(--accent);text-decoration:none;font-weight:600;}
+@media(max-width:768px){.content{padding:40px 20px;}.top-nav,.page-hero,.page-foot{padding-left:20px;padding-right:20px;}.card-grid{grid-template-columns:1fr;}.ota-grid{grid-template-columns:1fr;}.cmp-table th,.cmp-table td{padding:10px 12px;font-size:.8rem;}}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="index.html" class="logo"><span class="logo-dot"></span>HotelSathi</a>
+  <a href="index.html" class="back-link">← Back to home</a>
+</nav>
+
+<div class="page-hero">
+  <div class="tag">🏨 Service 01</div>
+  <h1>OTA Listing Support — <em>Get Found,<br>Get Booked.</em></h1>
+  <p class="intro">In today's world, travellers don't call hotels directly. They open Booking.com, Agoda or MakeMyTrip. If your hotel isn't there — you simply don't exist for them. OTA listing is not optional. It is the foundation of every rupee your hotel earns from online bookings.</p>
+</div>
+
+<div class="content">
+
+  <!-- WHAT IS OTA -->
+  <h2 class="sec">What is an OTA and why does it matter?</h2>
+  <p class="body">An Online Travel Agency (OTA) is a website or app where travellers search, compare and book hotels. Think of it as a giant digital marketplace — just like Daraz for products, but for hotel rooms. When a tourist plans a trip to Pokhara or Kathmandu, the first thing they do is open Booking.com and type in their destination. Your hotel needs to appear in those search results.</p>
+  <p class="body">Nepal welcomed over <strong>1 million international tourists</strong> in 2023. More than <strong>72% of all hotel bookings</strong> in South Asia now happen through OTAs. Hotels not listed on major OTAs miss most of this demand entirely.</p>
+
+  <div class="chart-section">
+    <div class="chart-title">Where do hotel bookings actually come from? (Nepal market, 2024)</div>
+    <div class="chart-sub">Share of total bookings by channel</div>
+    <div class="horiz-bars" id="horizBars">
+      <div class="hbar-row"><span class="hbar-label">Booking.com</span><div class="hbar-track"><div class="hbar-fill" style="width:0%;background:#003580;" data-w="38%">38%</div></div><span class="hbar-val">38%</span></div>
+      <div class="hbar-row"><span class="hbar-label">Agoda</span><div class="hbar-track"><div class="hbar-fill" style="width:0%;background:#E4002B;" data-w="22%">22%</div></div><span class="hbar-val">22%</span></div>
+      <div class="hbar-row"><span class="hbar-label">Expedia</span><div class="hbar-track"><div class="hbar-fill" style="width:0%;background:#00355F;" data-w="14%">14%</div></div><span class="hbar-val">14%</span></div>
+      <div class="hbar-row"><span class="hbar-label">MakeMyTrip</span><div class="hbar-track"><div class="hbar-fill" style="width:0%;background:#E63027;" data-w="10%">10%</div></div><span class="hbar-val">10%</span></div>
+      <div class="hbar-row"><span class="hbar-label">Direct / Phone</span><div class="hbar-track"><div class="hbar-fill" style="width:0%;background:#6b7280;" data-w="16%">16%</div></div><span class="hbar-val">16%</span></div>
+    </div>
+  </div>
+
+  <!-- THE 4 MAJOR OTAs -->
+  <h2 class="sec">The 4 OTAs you cannot ignore in Nepal</h2>
+  <p class="body">These four platforms together drive over 80% of online hotel bookings for Nepal properties. Not being on even one of them means leaving significant revenue on the table.</p>
+
+  <div class="ota-grid">
+    <div class="ota-card">
+      <div class="ota-header">
+        <div class="ota-logo" style="background:#003580;">B.</div>
+        <div><div class="ota-name">Booking.com</div><div class="ota-reach">560M+ monthly visitors worldwide</div></div>
+      </div>
+      <div class="ota-stat">
+        <div class="ostat"><strong>38%</strong><span>Nepal share</span></div>
+        <div class="ostat"><strong>560M</strong><span>Monthly visitors</span></div>
+        <div class="ostat"><strong>40+</strong><span>Languages</span></div>
+      </div>
+      <p class="ota-desc">The world's largest OTA. Strong in European and American travellers — exactly the tourists who pay the highest room rates in Nepal. Being on Booking.com with optimised photos and reviews is non-negotiable for any serious hotel.</p>
+    </div>
+    <div class="ota-card">
+      <div class="ota-header">
+        <div class="ota-logo" style="background:#E4002B;">a</div>
+        <div><div class="ota-name">Agoda</div><div class="ota-reach">Dominant in Asia-Pacific</div></div>
+      </div>
+      <div class="ota-stat">
+        <div class="ostat"><strong>22%</strong><span>Nepal share</span></div>
+        <div class="ostat"><strong>2M+</strong><span>Properties</span></div>
+        <div class="ostat"><strong>#1</strong><span>Asian travellers</span></div>
+      </div>
+      <p class="ota-desc">Agoda is the go-to platform for travellers from China, Thailand, South Korea and Japan — fast-growing segments in Nepal tourism. Agoda's flash deals and loyalty programme create strong booking volumes.</p>
+    </div>
+    <div class="ota-card">
+      <div class="ota-header">
+        <div class="ota-logo" style="background:#00355F;">Ex</div>
+        <div><div class="ota-name">Expedia</div><div class="ota-reach">Strong in US &amp; UK markets</div></div>
+      </div>
+      <div class="ota-stat">
+        <div class="ostat"><strong>14%</strong><span>Nepal share</span></div>
+        <div class="ostat"><strong>3M+</strong><span>Properties</span></div>
+        <div class="ostat"><strong>70+</strong><span>Sub-brands</span></div>
+      </div>
+      <p class="ota-desc">Listing on Expedia means you also appear on Hotels.com, Vrbo, Orbitz, and 70+ partner sites — all from one listing. Perfect for capturing American and British trekkers planning Nepal adventures months in advance.</p>
+    </div>
+    <div class="ota-card">
+      <div class="ota-header">
+        <div class="ota-logo" style="background:linear-gradient(135deg,#E63027,#1A4D8F);">M</div>
+        <div><div class="ota-name">MakeMyTrip</div><div class="ota-reach">Largest Indian travel platform</div></div>
+      </div>
+      <div class="ota-stat">
+        <div class="ostat"><strong>10%</strong><span>Nepal share</span></div>
+        <div class="ostat"><strong>40M+</strong><span>App users</span></div>
+        <div class="ostat"><strong>#1</strong><span>India bookings</span></div>
+      </div>
+      <p class="ota-desc">India is Nepal's single largest tourism market. MakeMyTrip (which also owns GoIbibo) is where Indian travellers plan and book Nepal trips. A well-optimised MMT listing can fill your hotel during Indian holidays and long weekends.</p>
+    </div>
+  </div>
+
+  <!-- ADVANTAGES -->
+  <h2 class="sec">7 reasons why OTA listing directly increases your revenue</h2>
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">🌍</div><h3>Global Reach Instantly</h3><p>A traveller in Germany planning a Nepal trip finds your hotel on Booking.com. Without OTAs, they would never discover you — no matter how beautiful your property is.</p></div>
+    <div class="card"><div class="card-icon">📊</div><h3>Higher Occupancy</h3><p>Hotels listed on 5+ OTAs see an average 28% higher occupancy compared to those listed on 1–2 platforms. More channels = more eyes = more bookings.</p></div>
+    <div class="card"><div class="card-icon">⭐</div><h3>Reviews Build Trust</h3><p>OTA guest reviews are your most powerful marketing tool. A hotel with 200+ reviews and a 8.5+ score consistently outranks competitors and commands higher prices.</p></div>
+    <div class="card"><div class="card-icon">💳</div><h3>Zero Upfront Cost</h3><p>You only pay a commission when a booking is made. No listing fees, no monthly charges. The OTA takes a percentage (typically 15–18%) only after you earn.</p></div>
+    <div class="card"><div class="card-icon">📱</div><h3>Mobile Travellers</h3><p>67% of travellers now book via mobile. OTA apps handle the entire booking flow, payment processing and customer support — so you don't have to.</p></div>
+    <div class="card"><div class="card-icon">🔄</div><h3>Last-Minute Fill</h3><p>OTAs excel at selling last-minute inventory. Instead of having empty rooms tonight, smart OTA pricing can fill them at a profitable rate up to the last hour.</p></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <h2 class="sec">How HotelSathi manages your OTA listings</h2>
+  <p class="body">Most hotel owners set up an OTA profile once and forget it. That's like putting up a shop and never cleaning the window or updating the price board. We actively manage your listings every single day.</p>
+  <div class="steps">
+    <div class="step" style="position:relative"><div class="step-num">1</div><div class="step-line"></div><div class="step-body"><h4>Professional Profile Setup</h4><p>We write compelling descriptions, upload high-quality photos with proper alt-text, and configure all amenities, policies and room types for maximum visibility in OTA search algorithms.</p></div></div>
+    <div class="step" style="position:relative"><div class="step-num">2</div><div class="step-line"></div><div class="step-body"><h4>Channel Manager Integration</h4><p>All your OTAs connect to a single channel manager. When a booking comes in from Agoda, availability instantly updates on Booking.com, Expedia and MMT — preventing double bookings.</p></div></div>
+    <div class="step" style="position:relative"><div class="step-num">3</div><div class="step-line"></div><div class="step-body"><h4>Dynamic Rate Management</h4><p>We update your prices based on demand, competitor rates, local events and seasonality. Your room rates are always competitive — not too low (losing revenue) and not too high (losing bookings).</p></div></div>
+    <div class="step" style="position:relative"><div class="step-num">4</div><div class="step-line"></div><div class="step-body"><h4>Review Management</h4><p>We monitor and respond to all guest reviews professionally. A well-managed review profile can increase conversion by up to 40% — turning browsers into bookers.</p></div></div>
+    <div class="step" style="position:relative"><div class="step-num">5</div><div class="step-line"></div><div class="step-body"><h4>Performance Reporting</h4><p>Monthly reports showing exactly which OTA is performing, what's driving bookings, and where we'll focus next month to keep improving your revenue.</p></div></div>
+  </div>
+
+  <!-- WITH vs WITHOUT -->
+  <h2 class="sec">With HotelSathi OTA management vs. without</h2>
+  <table class="cmp-table">
+    <thead><tr><th>Metric</th><th>Without OTA management</th><th>With HotelSathi</th></tr></thead>
+    <tbody>
+      <tr><td>Platforms listed on</td><td class="no">1–2 OTAs</td><td class="yes">6–10 OTAs</td></tr>
+      <tr><td>Profile completeness</td><td class="no">Incomplete, outdated</td><td class="yes">100% optimised, refreshed monthly</td></tr>
+      <tr><td>Rate updates</td><td class="no">Manual, infrequent</td><td class="yes">Dynamic, daily or real-time</td></tr>
+      <tr><td>Review response</td><td class="no">Rarely responded to</td><td class="yes">Responded within 24 hours</td></tr>
+      <tr><td>Overbooking risk</td><td class="no">High (manual sync)</td><td class="yes">Zero (auto channel sync)</td></tr>
+      <tr><td>Average occupancy lift</td><td class="no">Baseline</td><td class="yes">+22% to +38%</td></tr>
+      <tr><td>Revenue per available room</td><td class="no">Baseline</td><td class="yes">+28% average improvement</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <h3>Every empty room is lost revenue forever.</h3>
+    <p>A room that goes unsold tonight can never be sold again. OTA listing is the single most impactful thing you can do to fill those rooms — and HotelSathi makes it effortless.</p>
+    <a href="index.html#contact">Talk to us — it's free →</a>
+  </div>
+
+</div>
+
+<div class="page-foot">
+  <p>© 2026 HotelSathi. All rights reserved.</p>
+  <a href="index.html">← Back to home</a>
+</div>
+
+<script>
+// Animate horizontal bars on load
+window.addEventListener('load',()=>{
+  const bars=document.querySelectorAll('.hbar-fill[data-w]');
+  setTimeout(()=>{bars.forEach(b=>{b.style.transition='width 1.2s cubic-bezier(.16,1,.3,1)';b.style.width=b.dataset.w;});},400);
+});
+</script>
+</body>
+</html>
