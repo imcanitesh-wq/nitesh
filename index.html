@@ -260,33 +260,185 @@ nav.scrolled{background:rgba(255,255,255,.97);box-shadow:var(--sh-md)}
 .dbar-f{height:100%;background:var(--accent);border-radius:2px;opacity:.65;}
 .dbar-v{width:34px;text-align:right;color:var(--ink2);flex-shrink:0;font-weight:600;}
 
-/* TESTIMONIALS */
-.testimonials{background:var(--bg-dark);padding:112px 72px;}
-.testi-head{margin-bottom:52px;}
-.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.tc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r24);padding:36px;transition:background .28s var(--ease-out),border-color .28s,transform .3s var(--ease-spring),box-shadow .28s;}
-.tc:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16);transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.3);}
-.tc-quote{font-size:2.5rem;line-height:1;margin-bottom:14px;color:var(--accent-mid);font-weight:700;}
-.tc-text{font-size:.9375rem;line-height:1.8;color:rgba(255,255,255,.6);margin-bottom:28px;}
-.tc-author{display:flex;align-items:center;gap:12px;}
-.tc-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--accent),#818cf8);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;}
-.tc-info strong{display:block;font-size:.875rem;font-weight:600;color:#fff;letter-spacing:-.01em;}
-.tc-info span{font-size:.77rem;color:rgba(255,255,255,.38);}
+/* COMING SOON button — matches nav-cta style */
+.btn-coming-soon{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent-soft);color:var(--accent);
+  border:1.5px solid rgba(79,70,229,.25);
+  padding:11px 24px;border-radius:var(--rpill);
+  font-size:.9375rem;font-weight:600;letter-spacing:-.01em;
+  text-decoration:none;transition:all .2s;cursor:default;
+}
+.btn-coming-soon::before{content:'🕐';font-size:.85rem;}
 
-/* GALLERY */
-.gallery{background:var(--bg-light);padding:112px 72px 80px;}
-.gal-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:24px;}
-.ggrid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;}
-.gi{border-radius:var(--r16);overflow:hidden;position:relative;}
-.gi img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82);transition:filter .5s var(--ease-out),transform .6s var(--ease-out);}
-.gi:hover img{filter:brightness(.96);transform:scale(1.04)}
-.g1{grid-column:span 5;grid-row:span 2;min-height:480px;}
-.g2{grid-column:span 7;min-height:228px;}
-.g3{grid-column:span 4;min-height:244px;}
-.g4{grid-column:span 3;min-height:244px;}
-.gcap{position:absolute;bottom:0;left:0;right:0;padding:22px;background:linear-gradient(transparent,rgba(10,10,10,.76));}
-.gtag{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--accent);padding:3px 11px;border-radius:var(--rpill);margin-bottom:7px;}
-.gcap h4{font-size:.9rem;font-weight:600;color:#fff;letter-spacing:-.01em;}
+/* TESTIMONIALS — white bg */
+.testimonials{background:var(--white);padding:112px 72px;}
+.testi-head{margin-bottom:52px;}
+.testi-head .eyebrow{color:var(--accent);}
+
+/* CAROUSEL */
+.carousel-wrap{position:relative;overflow:hidden;}
+.carousel-track{
+  display:flex;gap:24px;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+  will-change:transform;
+}
+.tcard{
+  min-width:calc(33.333% - 16px);
+  background:var(--white);
+  border:1.5px solid rgba(79,70,229,.15);
+  border-radius:var(--r24);padding:36px;
+  flex-shrink:0;
+  box-shadow:0 2px 16px rgba(79,70,229,.06);
+  transition:border-color .3s,box-shadow .3s,transform .3s var(--ease-spring);
+}
+.tcard:hover{
+  border-color:rgba(79,70,229,.35);
+  box-shadow:0 8px 32px rgba(79,70,229,.12);
+  transform:translateY(-4px);
+}
+.tcard-stars{font-size:1rem;color:var(--accent);letter-spacing:2px;margin-bottom:16px;}
+.tcard-text{
+  font-size:1rem;line-height:1.8;color:var(--ink2);
+  margin-bottom:28px;font-style:italic;
+}
+.tcard-author{display:flex;align-items:center;gap:12px;}
+.tcard-av{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;color:#fff;
+  font-family:'Inter',sans-serif;
+}
+.tcard-author strong{display:block;font-size:.9rem;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+.tcard-author span{display:block;font-size:.78rem;color:var(--ink3);margin-top:2px;}
+
+/* Carousel controls */
+.carousel-controls{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;margin-top:36px;
+}
+.car-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--accent-soft);border:1.5px solid rgba(79,70,229,.2);
+  color:var(--accent);font-size:1rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s var(--ease-spring);font-family:'Inter',sans-serif;
+}
+.car-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:scale(1.08);}
+.car-dots{display:flex;gap:8px;align-items:center;}
+.car-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(79,70,229,.2);border:none;cursor:pointer;
+  transition:all .3s var(--ease-spring);padding:0;
+}
+.car-dot.active{background:var(--accent);width:24px;border-radius:4px;}
+
+@media(max-width:1100px){
+  .tcard{min-width:calc(50% - 12px);}
+}
+@media(max-width:640px){
+  .tcard{min-width:calc(100% - 0px);}
+  .testimonials{padding:72px 24px;}
+}
+
+/* ── SCROLL-STACK GALLERY ── */
+.gallery{background:var(--bg-light);padding:112px 72px 0;}
+.stack-header{text-align:left;margin-bottom:80px;}
+.stack-scene{position:relative;}
+
+/* Each card is sticky so it pins while the next slides up over it */
+.stack-card{
+  position:sticky;top:88px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:center;
+  background:var(--white);
+  border:1.5px solid rgba(79,70,229,.12);
+  border-radius:28px;
+  padding:56px 52px;
+  margin-bottom:24px;
+  box-shadow:0 4px 32px rgba(79,70,229,.07);
+  transition:box-shadow .3s;
+  /* Each card sits slightly higher than the one before */
+}
+.stack-card:nth-child(1){z-index:1;}
+.stack-card:nth-child(2){z-index:2;}
+.stack-card:nth-child(3){z-index:3;}
+.stack-card:nth-child(4){z-index:4;margin-bottom:0;}
+
+/* Left side */
+.stack-left{display:flex;flex-direction:column;gap:20px;}
+.stack-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.stag{
+  display:inline-flex;align-items:center;
+  background:var(--accent-soft);color:var(--accent);
+  border:1px solid rgba(79,70,229,.18);
+  border-radius:var(--rpill);
+  padding:6px 14px;
+  font-size:.8rem;font-weight:600;letter-spacing:.01em;
+  white-space:nowrap;
+}
+.stag-link{
+  text-decoration:none;
+  background:var(--accent);color:#fff;
+  transition:all .2s;
+}
+.stag-link:hover{background:var(--accent-h);transform:translateY(-1px);}
+
+.stack-title{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(1.8rem,3vw,2.6rem);
+  font-weight:700;letter-spacing:-.04em;
+  line-height:1.1;color:var(--ink);
+}
+.stack-desc{font-size:1rem;line-height:1.75;color:var(--ink2);}
+
+.stack-stats{display:flex;gap:24px;padding-top:4px;}
+.sstat{display:flex;flex-direction:column;gap:3px;}
+.sstat-v{font-family:'Inter',sans-serif;font-size:2rem;font-weight:700;letter-spacing:-.04em;color:var(--accent);}
+.sstat-l{font-size:.78rem;font-weight:500;color:var(--ink3);}
+
+/* Right side — image */
+.stack-right{}
+.stack-img-wrap{
+  border-radius:20px;overflow:hidden;
+  aspect-ratio:4/3;position:relative;
+  box-shadow:0 12px 48px rgba(0,0,0,.12);
+}
+.stack-img-wrap img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+  filter:brightness(.9);
+}
+.stack-card:hover .stack-img-wrap img{transform:scale(1.04);}
+.stack-img-overlay{
+  position:absolute;bottom:16px;left:16px;
+}
+.sio-badge{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);
+  border-radius:var(--rpill);
+  padding:6px 14px;
+  font-size:.8rem;font-weight:700;color:var(--ink);
+  display:inline-block;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+/* Bottom spacer so last card unsticks nicely */
+.stack-scene::after{
+  content:'';display:block;height:60px;
+}
+
+/* Responsive */
+@media(max-width:1100px){
+  .gallery{padding:80px 28px 0;}
+  .stack-card{grid-template-columns:1fr;gap:32px;padding:36px 28px;top:80px;}
+  .stack-right{order:-1;}
+}
+@media(max-width:640px){
+  .stack-card{padding:28px 20px;top:76px;}
+  .stack-title{font-size:1.6rem;}
+  .sstat-v{font-size:1.5rem;}
+}
 
 /* CTA */
 .cta-section{background:var(--bg-dark);padding:112px 72px;position:relative;overflow:hidden;}
@@ -603,32 +755,6 @@ p.sb.inv{color:rgba(255,255,255,.5);}
   </div>
 </section>
 
-<!-- NUMBERS -->
-<section class="numbers sec-pad" id="numbers">
-  <div class="eyebrow" data-reveal>By the numbers</div>
-  <h2 class="sh" data-reveal>Results that speak<br>for themselves.</h2>
-  <p class="sb" data-reveal style="margin-bottom:52px">Real metrics from real hotels across Nepal — tracked, measured, and delivered.</p>
-  <div class="num-grid">
-    <div class="nc" data-reveal data-delay="1"><div class="nv acc" data-count="320" data-suffix="+">0+</div><div class="nl">Hotels powered</div></div>
-    <div class="nc" data-reveal data-delay="2"><div class="nv" data-count-cur="2.8">₹0B</div><div class="nl">Bookings driven</div></div>
-    <div class="nc" data-reveal data-delay="3"><div class="nv acc" data-count="38" data-suffix="%">0%</div><div class="nl">Avg. revenue lift</div></div>
-    <div class="nc" data-reveal data-delay="4"><div class="nv" data-count-star="4.9">0★</div><div class="nl">Partner rating</div></div>
-  </div>
-  <div class="num-bottom">
-    <div class="nb-img" data-reveal="left"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1000&q=80" alt="Hotel lobby" loading="lazy"/></div>
-    <div class="nb-panel" data-reveal="right">
-      <div class="live-row"><div class="live-dot"></div><span>Real-time channel sync active</span></div>
-      <div><div class="big-num">+32% ADR</div><div class="big-lbl">Today vs. last month average daily rate</div></div>
-      <div class="bar-rows">
-        <div class="brow"><span class="bname">Booking.com</span><div class="btrack"><div class="bfill" style="width:42%"></div></div><span class="bpct">42%</span></div>
-        <div class="brow"><span class="bname">Expedia</span><div class="btrack"><div class="bfill" style="width:28%"></div></div><span class="bpct">28%</span></div>
-        <div class="brow"><span class="bname">Direct</span><div class="btrack"><div class="bfill" style="width:20%"></div></div><span class="bpct">20%</span></div>
-        <div class="brow"><span class="bname">Other OTAs</span><div class="btrack"><div class="bfill" style="width:10%"></div></div><span class="bpct">10%</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- PLATFORM -->
 <section class="platform" id="platform">
   <div class="plat-inner">
@@ -642,7 +768,7 @@ p.sb.inv{color:rgba(255,255,255,.5);}
         <li><span class="chk">✓</span>AI demand forecasting</li>
         <li><span class="chk">✓</span>Direct booking widget</li>
       </ul>
-      <a href="#services" class="btn-dark">See all features</a>
+      <a href="#services" class="btn-coming-soon">Coming Soon</a>
     </div>
     <div data-reveal="right">
       <div class="dash-widget">
@@ -663,32 +789,199 @@ p.sb.inv{color:rgba(255,255,255,.5);}
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- TESTIMONIALS — white bg, carousel -->
 <section class="testimonials" id="testimonials">
   <div class="testi-head" data-reveal>
-    <div class="eyebrow" style="color:var(--accent-mid)"><span style="display:inline-block;width:18px;height:1.5px;background:var(--accent-mid);border-radius:2px;vertical-align:middle;margin-right:8px"></span>Loved by hoteliers</div>
-    <h2 class="sh inv">What our partners say.</h2>
-    <p class="sb inv">Real stories from hotels across Nepal that have transformed their revenue.</p>
+    <div class="eyebrow">Loved by hoteliers</div>
+    <h2 class="sh">What our partners say.</h2>
+    <p class="sb">Real stories from hotels across Nepal that have transformed their revenue.</p>
   </div>
-  <div class="tgrid">
-    <div class="tc" data-reveal data-delay="1"><div class="tc-quote">"</div><p class="tc-text">Our direct bookings tripled in 6 months. The HotelSathi team feels like an extension of our own front desk.</p><div class="tc-author"><div class="tc-av">AS</div><div class="tc-info"><strong>Anjali Shrestha</strong><span>GM, Pokhara Lakeview Resort</span></div></div></div>
-    <div class="tc" data-reveal data-delay="2"><div class="tc-quote">"</div><p class="tc-text">Finally a partner who understands both Nepali hospitality and global OTAs. Our RevPAR is up 42%.</p><div class="tc-author"><div class="tc-av">BT</div><div class="tc-info"><strong>Bikash Thapa</strong><span>Owner, Heritage Inn Bhaktapur</span></div></div></div>
-    <div class="tc" data-reveal data-delay="3"><div class="tc-quote">"</div><p class="tc-text">Their 3D tours and AI pricing completely changed how we sell trekking packages. An absolute game changer.</p><div class="tc-author"><div class="tc-av">PL</div><div class="tc-info"><strong>Pema Lama</strong><span>Director, Annapurna Trail Lodges</span></div></div></div>
+
+  <div class="carousel-wrap" data-reveal>
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- Card 1 -->
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"Our direct bookings tripled in just 6 months. The HotelSathi team feels like a genuine extension of our own front desk — always available, always proactive."</p>
+        <div class="tcard-author">
+          <div class="tcard-av" style="background:linear-gradient(135deg,#4f46e5,#818cf8)">AS</div>
+          <div><strong>Anjali Shrestha</strong><span>GM, Pokhara Lakeview Resort</span></div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"Finally a partner who truly understands both Nepali hospitality and global OTAs. Our RevPAR is up 42% in four months. I wish we had started sooner."</p>
+        <div class="tcard-author">
+          <div class="tcard-av" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">BT</div>
+          <div><strong>Bikash Thapa</strong><span>Owner, Heritage Inn Bhaktapur</span></div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"Their 3D tours and AI pricing completely changed how we sell trekking packages. We went from 60% to 89% occupancy in peak season. An absolute game changer."</p>
+        <div class="tcard-author">
+          <div class="tcard-av" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">PL</div>
+          <div><strong>Pema Lama</strong><span>Director, Annapurna Trail Lodges</span></div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"HotelSathi set up our Booking.com and Agoda listings professionally and our ranking jumped significantly within weeks. Our phone bookings have doubled too."</p>
+        <div class="tcard-author">
+          <div class="tcard-av" style="background:linear-gradient(135deg,#16a34a,#4ade80)">RK</div>
+          <div><strong>Ramesh Karki</strong><span>Owner, Everest View Lodge, Namche</span></div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"The revenue management training and dynamic pricing alone paid for everything within the first month. Our ADR increased by NPR 2,100 per room per night."</p>
+        <div class="tcard-author">
+          <div class="tcard-av" style="background:linear-gradient(135deg,#dc2626,#f87171)">SP</div>
+          <div><strong>Sunita Pradhan</strong><span>MD, Chitwan Jungle Retreat</span></div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="tcard">
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">"We had been struggling with overbookings for years. HotelSathi's channel manager fixed that instantly. Zero double bookings since we started — completely stress-free."</p>
+        <div class="tcard-author">
+          <div class="tcard-av" style="background:linear-gradient(135deg,#d97706,#fbbf24)">NM</div>
+          <div><strong>Nabin Maharjan</strong><span>GM, Kathmandu Boutique Hotel</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div class="carousel-controls">
+      <button class="car-btn" id="carPrev" aria-label="Previous">&#8592;</button>
+      <div class="car-dots" id="carDots"></div>
+      <button class="car-btn" id="carNext" aria-label="Next">&#8594;</button>
+    </div>
   </div>
 </section>
 
-<!-- GALLERY -->
+<!-- GALLERY — scroll-stack cards (Bombon style) -->
 <section class="gallery" id="gallery">
-  <div class="gal-header" data-reveal>
-    <div><div class="eyebrow">Our work</div><h2 class="sh">Hotels we've helped shine.</h2></div>
-    <a href="#" class="btn-ghost" style="flex-shrink:0">View full gallery →</a>
+  <div class="stack-header">
+    <div class="eyebrow">Our work</div>
+    <h2 class="sh">Hotels we've helped shine.</h2>
+    <p class="sb">Scroll to explore the properties HotelSathi has transformed across Nepal.</p>
   </div>
-  <div class="ggrid">
-    <div class="gi g1" data-reveal="left"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80" alt="Pokhara Lakeview Resort" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Pokhara Lakeview Resort</h4></div></div>
-    <div class="gi g2" data-reveal><img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900&q=80" alt="Heritage Inn Bhaktapur" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Heritage Inn Bhaktapur</h4></div></div>
-    <div class="gi g3" data-reveal data-delay="1"><img src="https://images.unsplash.com/photo-1549294413-26f195200c16?w=700&q=80" alt="Annapurna Trail Lodges" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Annapurna Trail Lodges</h4></div></div>
-    <div class="gi g4" data-reveal data-delay="2"><img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=700&q=80" alt="Boutique Stays Kathmandu" loading="lazy"/><div class="gcap"><span class="gtag">Featured</span><h4>Boutique Stays of Kathmandu</h4></div></div>
-  </div>
+
+  <div class="stack-scene">
+
+    <!-- Card 1 -->
+    <div class="stack-card" id="scard-1">
+      <div class="stack-left">
+        <div class="stack-tags">
+          <span class="stag">Pokhara Lakeview Resort</span>
+          <span class="stag">Pokhara, Gandaki</span>
+          <a href="#" class="stag stag-link">View Hotel →</a>
+        </div>
+        <h3 class="stack-title">Lakeside luxury<br>— reimagined.</h3>
+        <p class="stack-desc">OTA management, dynamic pricing and a full website revamp lifted their direct bookings by 180% in 5 months.</p>
+        <div class="stack-stats">
+          <div class="sstat"><span class="sstat-v">+180%</span><span class="sstat-l">Direct bookings</span></div>
+          <div class="sstat"><span class="sstat-v">94%</span><span class="sstat-l">Peak occupancy</span></div>
+        </div>
+      </div>
+      <div class="stack-right">
+        <div class="stack-img-wrap">
+          <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=85" alt="Pokhara Lakeview Resort" loading="lazy"/>
+          <div class="stack-img-overlay">
+            <div class="sio-badge">⭐ 9.2 on Booking.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="stack-card" id="scard-2">
+      <div class="stack-left">
+        <div class="stack-tags">
+          <span class="stag">Heritage Inn Bhaktapur</span>
+          <span class="stag">Bhaktapur, Bagmati</span>
+          <a href="#" class="stag stag-link">View Hotel →</a>
+        </div>
+        <h3 class="stack-title">Heritage charm,<br>modern revenue.</h3>
+        <p class="stack-desc">Revenue management and OTA optimisation brought RevPAR up 42% while maintaining the property's boutique character.</p>
+        <div class="stack-stats">
+          <div class="sstat"><span class="sstat-v">+42%</span><span class="sstat-l">RevPAR growth</span></div>
+          <div class="sstat"><span class="sstat-v">32</span><span class="sstat-l">OTAs connected</span></div>
+        </div>
+      </div>
+      <div class="stack-right">
+        <div class="stack-img-wrap">
+          <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900&q=85" alt="Heritage Inn Bhaktapur" loading="lazy"/>
+          <div class="stack-img-overlay">
+            <div class="sio-badge">⭐ 8.8 on Agoda</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="stack-card" id="scard-3">
+      <div class="stack-left">
+        <div class="stack-tags">
+          <span class="stag">Annapurna Trail Lodges</span>
+          <span class="stag">Manang, Gandaki</span>
+          <a href="#" class="stag stag-link">View Hotel →</a>
+        </div>
+        <h3 class="stack-title">From trekkers'<br>stop to destination.</h3>
+        <p class="stack-desc">3D tours, trekking package marketing and AI pricing turned a simple trail lodge into a must-book Annapurna experience.</p>
+        <div class="stack-stats">
+          <div class="sstat"><span class="sstat-v">+89%</span><span class="sstat-l">Package bookings</span></div>
+          <div class="sstat"><span class="sstat-v">3×</span><span class="sstat-l">ADR increase</span></div>
+        </div>
+      </div>
+      <div class="stack-right">
+        <div class="stack-img-wrap">
+          <img src="https://images.unsplash.com/photo-1549294413-26f195200c16?w=900&q=85" alt="Annapurna Trail Lodges" loading="lazy"/>
+          <div class="stack-img-overlay">
+            <div class="sio-badge">⭐ 9.4 on Expedia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="stack-card" id="scard-4">
+      <div class="stack-left">
+        <div class="stack-tags">
+          <span class="stag">Kathmandu Boutique Hotel</span>
+          <span class="stag">Thamel, Kathmandu</span>
+          <a href="#" class="stag stag-link">View Hotel →</a>
+        </div>
+        <h3 class="stack-title">Zero overbookings,<br>maximum revenue.</h3>
+        <p class="stack-desc">Channel manager integration eliminated double bookings instantly. ADR rose NPR 2,100 per night through smart pricing strategy.</p>
+        <div class="stack-stats">
+          <div class="sstat"><span class="sstat-v">0</span><span class="sstat-l">Overbookings</span></div>
+          <div class="sstat"><span class="sstat-v">+38%</span><span class="sstat-l">Revenue lift</span></div>
+        </div>
+      </div>
+      <div class="stack-right">
+        <div class="stack-img-wrap">
+          <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900&q=85" alt="Kathmandu Boutique Hotel" loading="lazy"/>
+          <div class="stack-img-overlay">
+            <div class="sio-badge">⭐ 8.9 on MakeMyTrip</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end stack-scene -->
 </section>
 
 <!-- CTA -->
@@ -804,7 +1097,85 @@ document.querySelectorAll('.sc').forEach(card=>{
   card.addEventListener('mouseleave',()=>{card.style.transform='';});
 });
 
-/* ══ Chart tabs ══ */
+/* ══ Testimonial Carousel ══ */
+(function(){
+  const track=document.getElementById('carouselTrack');
+  if(!track)return;
+  const cards=track.querySelectorAll('.tcard');
+  const dotsWrap=document.getElementById('carDots');
+  const prevBtn=document.getElementById('carPrev');
+  const nextBtn=document.getElementById('carNext');
+  if(!cards.length)return;
+
+  // How many cards visible at once
+  function visibleCount(){
+    if(window.innerWidth<=640)return 1;
+    if(window.innerWidth<=1100)return 2;
+    return 3;
+  }
+
+  let current=0;
+  const total=cards.length;
+
+  // Build dots
+  function buildDots(){
+    dotsWrap.innerHTML='';
+    const pages=Math.ceil(total/visibleCount());
+    for(let i=0;i<pages;i++){
+      const d=document.createElement('button');
+      d.className='car-dot'+(i===0?' active':'');
+      d.setAttribute('aria-label','Go to slide '+(i+1));
+      d.addEventListener('click',()=>goTo(i*visibleCount()));
+      dotsWrap.appendChild(d);
+    }
+  }
+
+  function updateDots(){
+    const dots=dotsWrap.querySelectorAll('.car-dot');
+    const page=Math.floor(current/visibleCount());
+    dots.forEach((d,i)=>d.classList.toggle('active',i===page));
+  }
+
+  function goTo(idx){
+    const vc=visibleCount();
+    const maxIdx=Math.max(0,total-vc);
+    current=Math.max(0,Math.min(idx,maxIdx));
+    const cardW=cards[0].getBoundingClientRect().width+24;
+    track.style.transform=`translateX(-${current*cardW}px)`;
+    updateDots();
+  }
+
+  prevBtn.addEventListener('click',()=>goTo(current-visibleCount()));
+  nextBtn.addEventListener('click',()=>goTo(current+visibleCount()));
+
+  // Auto-advance every 4s
+  let autoTimer=setInterval(()=>{
+    const vc=visibleCount();
+    const maxIdx=Math.max(0,total-vc);
+    goTo(current+vc>maxIdx?0:current+vc);
+  },4000);
+
+  // Pause on hover
+  track.parentElement.addEventListener('mouseenter',()=>clearInterval(autoTimer));
+  track.parentElement.addEventListener('mouseleave',()=>{
+    autoTimer=setInterval(()=>{
+      const vc=visibleCount();
+      const maxIdx=Math.max(0,total-vc);
+      goTo(current+vc>maxIdx?0:current+vc);
+    },4000);
+  });
+
+  // Touch/swipe support
+  let touchStartX=0;
+  track.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{
+    const diff=touchStartX-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>50)goTo(diff>0?current+visibleCount():current-visibleCount());
+  },{passive:true});
+
+  buildDots();
+  window.addEventListener('resize',()=>{buildDots();goTo(0);});
+})();
 const tabs=document.querySelectorAll('.chart-tab');
 const panels=document.querySelectorAll('.tab-panel');
 tabs.forEach(tab=>{
